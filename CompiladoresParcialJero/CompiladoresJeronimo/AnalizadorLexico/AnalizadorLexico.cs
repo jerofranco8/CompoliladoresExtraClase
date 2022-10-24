@@ -1576,12 +1576,18 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         private ComponenteLexico ProcesarEstado69()
         {
             int count = Lexema.Length+1;
+            string Causa = "No se respeto la estructura de la cadena SELECT, el lexema digitado fue: " + Lexema;
+
             Lexema = "SELECT";
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial+5;
             
             DevolverPuntero();
+            String Falla = "SELECT no valido";
+            String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura SELECT";
+            Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+            GestorErrores.Agregar(Error);
             ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema, Categoria.SQL_SELECT, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
 
@@ -1589,12 +1595,17 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         private ComponenteLexico ProcesarEstado70()
         {
             int count = Lexema.Length + 1;
+            string Causa = "No se respeto la estructura de la cadena FROM, el lexema digitado fue: " + Lexema;
             Lexema = "FROM";
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial + 3;
 
             DevolverPuntero();
+            String Falla = "FROM no valido";
+            String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura FROM";
+            Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+            GestorErrores.Agregar(Error);
             ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema, Categoria.SQL_FROM, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
         }
@@ -1602,12 +1613,16 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         {
 
             int count = Lexema.Length + 1;
+            string Causa = "No se respeto la estructura de la cadena WHERE, el lexema digitado fue: " + Lexema;
             Lexema = "WHERE";
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial + 4;
-
             DevolverPuntero();
+            String Falla = "WHERE no valido";
+            String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura WHERE";
+            Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+            GestorErrores.Agregar(Error);
             ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema, Categoria.SQL_WHERE, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
         }
@@ -1615,12 +1630,16 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         {
 
             int count = Lexema.Length + 1;
+            string Causa = "No se respeto la estructura de la cadena ORDER BY, el lexema digitado fue: " + Lexema;
             Lexema = "ORDER BY";
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial + 7;
-
             DevolverPuntero();
+            String Falla = "Order by no valido";
+            String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura ORDER BY";
+            Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+            GestorErrores.Agregar(Error);
             ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema, Categoria.SQL_ORDER_BY, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
         }
@@ -1633,10 +1652,8 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial + 2;
-
             DevolverPuntero();
-            String Falla = "Conector Y no valido";
-            
+            String Falla = "Conector Y no valido";   
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura AND";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
@@ -1655,7 +1672,6 @@ namespace CompiladoresJeronimo.AnalizadorLexico
 
             DevolverPuntero();
             String Falla = "Ascendente no valido";
-
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura ASC";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);

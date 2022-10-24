@@ -17,11 +17,10 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
         private void PedirComponente()
         {
-
             Componente = AnaLex.DevolverComponente();
         }
 
-        public  void  Analizar()
+        public void Analizar()
         {
             PedirComponente();
             Expresion();
@@ -41,101 +40,162 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
         }
 
 
-        //  <Expresion>-><Termino><ExpresionPrima> 
+        //  <Expresion>-> SELECT<Campos>FROM<Tabla> 
         private void Expresion()
         {
-            Termino();
-            ExpresionPrima();
-        }
-        // <Termino>-><Factor><TerminoPrima>
-        private void Termino()
-        {
-            Factor();
-            TerminoPrima();
-        }
-        //  <ExpresionPrima>->+<Expresion>|-<Expresion>|Epsilon
-        private void ExpresionPrima()
-        {
-            if (Categoria.SUMA.Equals(Componente.GetCategoria()))
-            {
-                PedirComponente();
-                Expresion();
-            }
-            else if (Categoria.RESTA.Equals(Componente.GetCategoria()))
-            {
-                PedirComponente();
-                Expresion();
-            }
+            Select();
+            Campos();
+            From();
+            Tablas();
         }
 
-        //  <Factor>->NUMERO ENTERO|NUMERO DECIMAL|(<Expresion>)
-        private void Factor()
+        private void Select()
         {
-            if (Categoria.NUMERO_ENTERO.Equals(Componente.GetCategoria()))
-            {
-                PedirComponente();
-
-            }
-            else if (Categoria.NUMERO_DECIMAL.Equals(Componente.GetCategoria()))
+            if (Categoria.SQL_SELECT.Equals(Componente.GetCategoria()))
             {
                 PedirComponente();
             }
-
-            else if (Categoria.ABRE.Equals(Componente.GetCategoria()))
-            {
-
-                PedirComponente();
-                Expresion();
-                if (Categoria.CIERRA.Equals(Componente.GetCategoria()))
-                {
-                    PedirComponente();
-                }
-
-                else
-                {
-                    String Falla = "No se cerro parentesis";
-                    string Causa = "Esperaba ')' y recibi " + Componente.GetLexema() + " ";
-                    String Solucion = "Asegurese de tener la posicion indicada ";
-                    int PosicionFinal = Componente.GetPosicionFinal();
-                    int PosicionInicial = Componente.GetPosicionInicial();
-                    int NumeroLinea = Componente.GetNumeroLinea();
-
-                    Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
-                    GestorErrores.Agregar(Error);
-                    throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha recibido el ')' esperado, se recibio: " + Componente.GetLexema());
-                }
-            }
-
-            
             else
             {
-                String Falla = "Componente no valido";
-                string Causa = "No recibi lo esprado ";
-                String Solucion = "Asegurese de tener la posicion indicada ";
+                String Falla = "El codigo fuente debe empezar por SELECT";
+                string Causa = "No se ha empezado el codigo con un SELECT, se ha empezado con un: " + Componente.GetLexema();
+                String Solucion = "Asegurese de empezar el codigo con SELECT";
                 int PosicionFinal = Componente.GetPosicionFinal();
                 int PosicionInicial = Componente.GetPosicionInicial();
                 int NumeroLinea = Componente.GetNumeroLinea();
 
                 Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
                 GestorErrores.Agregar(Error);
-                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba un simoblo vlaido, se recibio: " + Componente.GetLexema());
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha empezado el con un SELECT, se recibio: " + Componente.GetLexema());
+            }
+        }
+
+        private void Campos()
+        {
+            if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else
+            {
+                String Falla = "El codigo fuente debe incluir minimo un CAMPO";
+                string Causa = "No se ha ingresado un CAMPO: " + Componente.GetLexema();
+                String Solucion = "Asegurese de ingresar un CAMPO";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha Ingresado un CAMPO, se recibio: " + Componente.GetLexema());
+            }
+            Boolean ComaActiva = true;
+            while (ComaActiva)
+            {
+                if (Categoria.COMA.Equals(Componente.GetCategoria()))
+                {
+                    PedirComponente();
+
+                    if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
+                    {
+                        PedirComponente();
+                    }
+                    else
+                    {
+                        String Falla = "Luego de la 'COMA', debio seguir otro CAMPO";
+                        string Causa = "No se ha ingresado un CAMPO despues de la coma, se ha ingreasado: " + Componente.GetLexema();
+                        String Solucion = "Asegurese de ingresar un CAMPO luego de una COMA";
+                        int PosicionFinal = Componente.GetPosicionFinal();
+                        int PosicionInicial = Componente.GetPosicionInicial();
+                        int NumeroLinea = Componente.GetNumeroLinea();
+
+                        Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                        GestorErrores.Agregar(Error);
+                        throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha Ingresado un CAMPO luego de una 'COMA', se recibio: " + Componente.GetLexema());
+                    }
+
+                }
+                else
+                {
+                    ComaActiva = false;
+                }
             }
 
         }
-
-        //  <TerminoPrima>->*<Termino>|/<Termino>|Epsilon
-        private void TerminoPrima()
+        private void From()
         {
-            if (Categoria.DIVISOR.Equals(Componente.GetCategoria()))
+            if (Categoria.SQL_FROM.Equals(Componente.GetCategoria()))
             {
                 PedirComponente();
-                Termino();
             }
-            else if (Categoria.MULTIPLICADOR.Equals(Componente.GetCategoria()))
+            else
+            {
+                String Falla = "Luego de los campos debia seguir un FROM";
+                string Causa = "Luego de los campos debia seguir un FROM, y se ingresado un: " + Componente.GetLexema();
+                String Solucion = "Asegurese de que luego de los campos siga un FROM";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha ingresado el from despues de los campos, se recibio: " + Componente.GetLexema());
+            }
+        }
+        private void Tablas()
+        {
+            if (Categoria.TABLA.Equals(Componente.GetCategoria()))
             {
                 PedirComponente();
-                Termino();
             }
+            else
+            {
+                String Falla = "El codigo fuente debe incluir minimo una TABLA";
+                string Causa = "No se ha ingresado una TABLA: " + Componente.GetLexema();
+                String Solucion = "Asegurese de ingresar una TABLA";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha Ingresado una TABLA, se recibio: " + Componente.GetLexema());
+            }
+            Boolean ComaActiva = true;
+            while (ComaActiva)
+            {
+                if (Categoria.COMA.Equals(Componente.GetCategoria()))
+                {
+                    PedirComponente();
+
+                    if (Categoria.TABLA.Equals(Componente.GetCategoria()))
+                    {
+                        PedirComponente();
+                    }
+                    else
+                    {
+                        String Falla = "Luego de la 'COMA', debio seguir otra TABLA";
+                        string Causa = "No se ha ingresado una TABLA despues de la coma, se ha ingreasado: " + Componente.GetLexema();
+                        String Solucion = "Asegurese de ingresar una TABLA luego de una COMA";
+                        int PosicionFinal = Componente.GetPosicionFinal();
+                        int PosicionInicial = Componente.GetPosicionInicial();
+                        int NumeroLinea = Componente.GetNumeroLinea();
+
+                        Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                        GestorErrores.Agregar(Error);
+                        throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha Ingresado una TABLA luego de una 'COMA', se recibio: " + Componente.GetLexema());
+                    }
+
+                }
+                else
+                {
+                    ComaActiva = false;
+                }
+            }
+
+
+
+
         }
     }
 }

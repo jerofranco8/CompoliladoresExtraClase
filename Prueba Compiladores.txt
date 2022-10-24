@@ -1,6 +1,1 @@
-
-select CAM_nom 2 FROM  TaB_RO‘%& #2’
-Where
-
-0.3><= <> !AND
-OR 45,
+Select Cam_                           From tab_2

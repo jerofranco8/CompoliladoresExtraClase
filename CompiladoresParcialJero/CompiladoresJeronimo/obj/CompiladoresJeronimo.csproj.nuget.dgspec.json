@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Compiladores\\ParcialCompiladoresJeronimo\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj": {}
+    "C:\\Users\\jerof\\OneDrive\\Documentos\\Universidad\\Compiladores\\CompiladoreGitHub\\CompoliladoresExtraClase\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj": {}
   },
   "projects": {
-    "E:\\Compiladores\\ParcialCompiladoresJeronimo\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj": {
+    "C:\\Users\\jerof\\OneDrive\\Documentos\\Universidad\\Compiladores\\CompiladoreGitHub\\CompoliladoresExtraClase\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Compiladores\\ParcialCompiladoresJeronimo\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj",
+        "projectUniqueName": "C:\\Users\\jerof\\OneDrive\\Documentos\\Universidad\\Compiladores\\CompiladoreGitHub\\CompoliladoresExtraClase\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj",
         "projectName": "CompiladoresJeronimo",
-        "projectPath": "E:\\Compiladores\\ParcialCompiladoresJeronimo\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj",
+        "projectPath": "C:\\Users\\jerof\\OneDrive\\Documentos\\Universidad\\Compiladores\\CompiladoreGitHub\\CompoliladoresExtraClase\\CompiladoresParcialJero\\CompiladoresJeronimo\\CompiladoresJeronimo.csproj",
         "packagesPath": "C:\\Users\\jerof\\.nuget\\packages\\",
-        "outputPath": "E:\\Compiladores\\ParcialCompiladoresJeronimo\\CompiladoresParcialJero\\CompiladoresJeronimo\\obj\\",
+        "outputPath": "C:\\Users\\jerof\\OneDrive\\Documentos\\Universidad\\Compiladores\\CompiladoreGitHub\\CompoliladoresExtraClase\\CompiladoresParcialJero\\CompiladoresJeronimo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jerof\\AppData\\Roaming\\NuGet\\NuGet.Config",

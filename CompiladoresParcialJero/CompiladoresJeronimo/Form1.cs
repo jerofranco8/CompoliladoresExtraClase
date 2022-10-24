@@ -12,6 +12,8 @@ namespace CompiladoresJeronimo
         {
             InitializeComponent();
         }
+        private String CodigoOrganizado;
+        private String CodigoDesorganizado;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -24,6 +26,18 @@ namespace CompiladoresJeronimo
             {
                 Cache.GetCache().AgregarContenido(TB_Fuente.Lines[i]);
             }
+           
+            try
+            {
+                AnalisadosSintactico.AnalisisSintactico AnaSin = new AnalisadosSintactico.AnalisisSintactico();
+                AnaSin.Analizar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+
             try
             {
                 AnalizadorLexico.AnalizadorLexico Analex = AnalizadorLexico.AnalizadorLexico.Crear();
@@ -95,14 +109,37 @@ namespace CompiladoresJeronimo
             TB_Fuente.Clear();
             TB_Organizado.Clear();
             dataGridView1.Rows.Clear();
+            dataGridView2.Rows.Clear();
+            CodigoDesorganizado = "";
+            CodigoOrganizado = "";
         }
 
         private void BTCargarTipoArchivo_Click(object sender, EventArgs e)
         {
-            if (RB_Archivo.Checked)
+
+            DialogResult respuesta;
+            string RutaArchivo;
+            openFileDialog1.Title = "Abrir archivo de texto";
+            openFileDialog1.Filter = "Archivo de texto|*.txt";
+            openFileDialog1.FileName = "";
+
+            respuesta = openFileDialog1.ShowDialog();
+            if (respuesta == DialogResult.OK)
             {
-                Form Formulario2 = new Form2();
-                Formulario2.Show();
+                RutaArchivo = openFileDialog1.FileName;
+                FileStream Archivo = new FileStream(RutaArchivo, FileMode.Open, FileAccess.Read);
+                StreamReader Leer = new StreamReader(Archivo);
+                TB_Fuente.Text = "";
+                while (!Leer.EndOfStream)
+                {
+                    CodigoDesorganizado = (CodigoDesorganizado + Leer.ReadLine() + "\r\n");
+                }
+                CodigoDesorganizado = CodigoDesorganizado.Remove(CodigoDesorganizado.Length - 2);
+                TB_Fuente.Text = CodigoDesorganizado;
+            }
+            else
+            {
+                MessageBox.Show("Cancelaste abrir archivo");
             }
         }
     }

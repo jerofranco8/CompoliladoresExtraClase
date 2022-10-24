@@ -1,0 +1,224 @@
+// <Termino>-><Factor><TerminoPrima>
+        private void Termino()
+        {
+            Factor();
+            TerminoPrima();
+        }
+
+//  <ExpresionPrima>->+<Expresion>|-<Expresion>|Epsilon
+        private void ExpresionPrima()
+        {
+            if (Categoria.SUMA.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Expresion();
+            }
+            else if (Categoria.RESTA.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Expresion();
+            }
+        }
+
+        //  <Factor>->NUMERO ENTERO|NUMERO DECIMAL|(<Expresion>)
+        private void Factor()
+        {
+            if (Categoria.NUMERO_ENTERO.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+
+            }
+            else if (Categoria.NUMERO_DECIMAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+
+            else if (Categoria.ABRE.Equals(Componente.GetCategoria()))
+            {
+
+                PedirComponente();
+                Expresion();
+                if (Categoria.CIERRA.Equals(Componente.GetCategoria()))
+                {
+                    PedirComponente();
+                }
+
+                else
+                {
+                    String Falla = "No se cerro parentesis";
+                    string Causa = "Esperaba ')' y recibi " + Componente.GetLexema() + " ";
+                    String Solucion = "Asegurese de tener la posicion indicada ";
+                    int PosicionFinal = Componente.GetPosicionFinal();
+                    int PosicionInicial = Componente.GetPosicionInicial();
+                    int NumeroLinea = Componente.GetNumeroLinea();
+
+                    Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                    GestorErrores.Agregar(Error);
+                    throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha recibido el ')' esperado, se recibio: " + Componente.GetLexema());
+                }
+            }
+
+            
+            else
+            {
+                String Falla = "Componente no valido";
+                string Causa = "No recibi lo esprado ";
+                String Solucion = "Asegurese de tener la posicion indicada ";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba un simoblo vlaido, se recibio: " + Componente.GetLexema());
+            }
+
+        }
+
+        //  <TerminoPrima>->*<Termino>|/<Termino>|Epsilon
+        private void TerminoPrima()
+        {
+            if (Categoria.DIVISOR.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Termino();
+            }
+            else if (Categoria.MULTIPLICADOR.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Termino();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+private void BT_Procesar_Click(object sender, EventArgs e)
+        {
+            TB_Organizado.Text = CodigoDesorganizado;
+            for (int i = 0; i < TB_Organizado.Lines.Count(); i++)
+            {
+                Cache.GetCache().AgregarContenido(TB_Organizado.Lines[i]);
+            }
+
+            for (int i = 0; i < TB_Organizado.Lines.Count(); i++)
+            {
+                CodigoOrganizado = CodigoOrganizado + (i + 1) + "   " + TB_Organizado.Lines[i] + "\r\n";
+            }
+
+            TB_Organizado.Text = CodigoOrganizado;
+
+            try
+            {
+                AnalizadorLexico.AnalizadorLexico Analex = AnalizadorLexico.AnalizadorLexico.Crear();
+                ComponenteLexico Componente = null;
+                do
+                {
+                    Componente = Analex.DevolverComponente();
+                    MessageBox.Show(Componente.ToString());
+                } while (!Componente.GetCategoria().Equals(Categoria.FIN_ARCHIVO));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void BT_Reiniciar_Click(object sender, EventArgs e)
+        {
+            Cache.GetCache().Reiniciar();
+            TB_Fuente.Clear();
+            TB_Organizado.Clear();
+            CodigoDesorganizado = "";
+            CodigoOrganizado = "";
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+namespace CompiladoresJeronimo
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+        }
+
+        private String CodigoOrganizado;
+        private String CodigoDesorganizado;
+
+        private void CargarArchivo_Click(object sender, EventArgs e)
+        {
+            
+            DialogResult respuesta;
+            string RutaArchivo;
+            openFileDialog1.Title = "Abrir archivo de texto";
+            openFileDialog1.Filter = "Archivo de texto|*.txt";
+            openFileDialog1.FileName = "";
+
+            respuesta= openFileDialog1.ShowDialog();
+            if (respuesta == DialogResult.OK)
+            {
+                RutaArchivo = openFileDialog1.FileName;
+                FileStream Archivo = new FileStream(RutaArchivo, FileMode.Open, FileAccess.Read);
+                StreamReader Leer = new StreamReader(Archivo);
+                TB_Organizado.Text = "";
+                while (!Leer.EndOfStream) {
+                    CodigoDesorganizado = (CodigoDesorganizado+ Leer.ReadLine()+ "\r\n");
+                }
+                CodigoDesorganizado = CodigoDesorganizado.Remove(CodigoDesorganizado.Length - 2);
+                TB_Fuente.Text = RutaArchivo;
+                TB_Organizado.Text=CodigoDesorganizado;
+            }
+            else
+            {
+                MessageBox.Show("Cancelaste abrir archivo");
+            }
+
+            Form1 form1 = new Form1();
+            form1.TB_Fuente1.Text= TB_Organizado.Text;
+            form1.Show();
+        }
+
+       
+
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

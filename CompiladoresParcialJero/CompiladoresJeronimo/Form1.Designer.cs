@@ -32,9 +32,6 @@
             this.TB_Fuente = new System.Windows.Forms.TextBox();
             this.TB_Organizado = new System.Windows.Forms.TextBox();
             this.BT_Organizar = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RB_Archivo = new System.Windows.Forms.RadioButton();
-            this.RB_Consola = new System.Windows.Forms.RadioButton();
             this.BTCargarTipoArchivo = new System.Windows.Forms.Button();
             this.BT_Reiniciar = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -56,7 +53,7 @@
             this.Causa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Solucion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo_ = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox1.SuspendLayout();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -67,7 +64,7 @@
             // 
             // BT_Procesar
             // 
-            this.BT_Procesar.Location = new System.Drawing.Point(237, 264);
+            this.BT_Procesar.Location = new System.Drawing.Point(241, 235);
             this.BT_Procesar.Name = "BT_Procesar";
             this.BT_Procesar.Size = new System.Drawing.Size(139, 47);
             this.BT_Procesar.TabIndex = 0;
@@ -77,23 +74,23 @@
             // 
             // TB_Fuente
             // 
-            this.TB_Fuente.Location = new System.Drawing.Point(19, 94);
+            this.TB_Fuente.Location = new System.Drawing.Point(19, 17);
             this.TB_Fuente.Multiline = true;
             this.TB_Fuente.Name = "TB_Fuente";
-            this.TB_Fuente.Size = new System.Drawing.Size(586, 138);
+            this.TB_Fuente.Size = new System.Drawing.Size(586, 179);
             this.TB_Fuente.TabIndex = 1;
             // 
             // TB_Organizado
             // 
-            this.TB_Organizado.Location = new System.Drawing.Point(19, 345);
+            this.TB_Organizado.Location = new System.Drawing.Point(19, 304);
             this.TB_Organizado.Multiline = true;
             this.TB_Organizado.Name = "TB_Organizado";
-            this.TB_Organizado.Size = new System.Drawing.Size(586, 121);
+            this.TB_Organizado.Size = new System.Drawing.Size(586, 162);
             this.TB_Organizado.TabIndex = 2;
             // 
             // BT_Organizar
             // 
-            this.BT_Organizar.Location = new System.Drawing.Point(19, 264);
+            this.BT_Organizar.Location = new System.Drawing.Point(19, 235);
             this.BT_Organizar.Name = "BT_Organizar";
             this.BT_Organizar.Size = new System.Drawing.Size(143, 47);
             this.BT_Organizar.TabIndex = 3;
@@ -101,42 +98,9 @@
             this.BT_Organizar.UseVisualStyleBackColor = true;
             this.BT_Organizar.Click += new System.EventHandler(this.BT_Organizar_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.RB_Archivo);
-            this.groupBox1.Controls.Add(this.RB_Consola);
-            this.groupBox1.Location = new System.Drawing.Point(19, 26);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(586, 43);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Tipo De Carga";
-            // 
-            // RB_Archivo
-            // 
-            this.RB_Archivo.AutoSize = true;
-            this.RB_Archivo.Location = new System.Drawing.Point(385, 16);
-            this.RB_Archivo.Name = "RB_Archivo";
-            this.RB_Archivo.Size = new System.Drawing.Size(66, 19);
-            this.RB_Archivo.TabIndex = 1;
-            this.RB_Archivo.Text = "Archivo";
-            this.RB_Archivo.UseVisualStyleBackColor = true;
-            // 
-            // RB_Consola
-            // 
-            this.RB_Consola.AutoSize = true;
-            this.RB_Consola.Checked = true;
-            this.RB_Consola.Location = new System.Drawing.Point(152, 16);
-            this.RB_Consola.Name = "RB_Consola";
-            this.RB_Consola.Size = new System.Drawing.Size(68, 19);
-            this.RB_Consola.TabIndex = 0;
-            this.RB_Consola.TabStop = true;
-            this.RB_Consola.Text = "Consola";
-            this.RB_Consola.UseVisualStyleBackColor = true;
-            // 
             // BTCargarTipoArchivo
             // 
-            this.BTCargarTipoArchivo.Location = new System.Drawing.Point(637, 30);
+            this.BTCargarTipoArchivo.Location = new System.Drawing.Point(638, 94);
             this.BTCargarTipoArchivo.Name = "BTCargarTipoArchivo";
             this.BTCargarTipoArchivo.Size = new System.Drawing.Size(121, 43);
             this.BTCargarTipoArchivo.TabIndex = 5;
@@ -146,7 +110,7 @@
             // 
             // BT_Reiniciar
             // 
-            this.BT_Reiniciar.Location = new System.Drawing.Point(457, 264);
+            this.BT_Reiniciar.Location = new System.Drawing.Point(460, 235);
             this.BT_Reiniciar.Name = "BT_Reiniciar";
             this.BT_Reiniciar.Size = new System.Drawing.Size(136, 47);
             this.BT_Reiniciar.TabIndex = 6;
@@ -167,7 +131,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.BT_Reiniciar);
             this.tabPage1.Controls.Add(this.BT_Procesar);
             this.tabPage1.Controls.Add(this.BTCargarTipoArchivo);
@@ -302,6 +265,10 @@
             this.Tipo_.HeaderText = "Tipo";
             this.Tipo_.Name = "Tipo_";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -310,8 +277,6 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -326,7 +291,6 @@
         #endregion
 
         private Button BT_Procesar;
-        private TextBox TB_Fuente;
         private TextBox TB_Organizado;
         private Button BT_Organizar;
         private GroupBox groupBox1;
@@ -353,5 +317,7 @@
         private DataGridViewTextBoxColumn Causa;
         private DataGridViewTextBoxColumn Solucion;
         private DataGridViewTextBoxColumn Tipo_;
+        public TextBox TB_Fuente;
+        private OpenFileDialog openFileDialog1;
     }
 }
