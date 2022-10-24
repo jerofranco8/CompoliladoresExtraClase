@@ -40,13 +40,15 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
         }
 
 
-        //  <Expresion>-> SELECT<Campos>FROM<Tabla> 
+        //  <Expresión> 	 -->  SELECT<Campos>FROM<Tablas><Where><Order by>
         private void Expresion()
         {
             Select();
             Campos();
             From();
             Tablas();
+            Where();
+            Order_BY();
         }
 
         private void Select()
@@ -69,7 +71,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                 throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha empezado el con un SELECT, se recibio: " + Componente.GetLexema());
             }
         }
-        //  <Campos>-> CAMPO|CAMPO,<Campos>
+        //  < Campos>  	 -->  CAMPO|CAMPO,<Campos>
         private void Campos()
         {
             if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
@@ -142,7 +144,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                 throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha ingresado el from despues de los campos, se recibio: " + Componente.GetLexema());
             }
         }
-        //  <Tablas>-> TABLA|TABLA,<Tablas>
+        //  <Tablas>     	 -->  TABLA|TABLA,<Tablas>
         private void Tablas()
         {
             if (Categoria.TABLA.Equals(Componente.GetCategoria()))
@@ -196,6 +198,194 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
 
 
+
+        }
+
+        // <Where>      	  -->  WHERE<Condiciones>|Epsilon
+        private void Where()
+        {
+            if (Categoria.SQL_WHERE.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Condiciones();
+            }
+
+        }
+        // <Condiciones>  -->  <Operando><Operador><Operando><Conector>
+        private void Condiciones()
+        {
+            Operando();
+            Operador();
+            Operando();
+            Conector();
+        }
+        // <Operando>      -->  CAMPO|LITERAL|DECIMAL|ENTERO
+        private void Operando()
+        {
+            if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+
+            }
+            else if (Categoria.LITERAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.NUMERO_DECIMAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.NUMERO_ENTERO.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else
+            {
+                String Falla = "Operando no valido";
+                string Causa = "Se esperaba recibir un campo, literal, decimal o entero y se recibio : "+ Componente.GetLexema();
+                String Solucion = "Asegurese de tener un campo, literal, decimal o entero en la posicion indicada ";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba un un campo, literal, decimal o entero, se recibio: " + Componente.GetLexema());
+            }
+        }
+        // <Operador>       -->  MAYOR QUE|MENOR QUE|IGUAL QUE|MAYOR O IGUAL QUE|  MENOR O IGUAL QUE|DIFERENTE QUE
+        private void Operador()
+        {
+            if (Categoria.MAYOR.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+
+            }
+            else if (Categoria.MENOR.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.IGUAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.MAYOR_IGUAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.MENOR_IGUAL.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else if (Categoria.DIFERENTE_QUE.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+            else
+            {
+                String Falla = "Operador no valido";
+                string Causa = "Se esperaba recibir un operador valido y se recibio : " + Componente.GetLexema();
+                String Solucion = "Asegurese de tener un operador valido en la posicion indicada ";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se operador valido, se recibio: " + Componente.GetLexema());
+            }
+
+        }
+        // <Conector>         -->  AND<Condiciones>|OR<Condiciones>|Epsilon
+        private void Conector()
+        {
+            if (Categoria.CONECTOR_Y.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Condiciones();
+
+            }
+            else if (Categoria.CONECTOR_O.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Condiciones();
+            }
+        }
+        // <Order by>         -->  ORDER BY<Ordenadores>| Epsilon
+        private void Order_BY()
+        {
+            if (Categoria.SQL_ORDER_BY.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+                Ordenadores();
+
+            }
+        }
+        // <Ordenadores>  -->  <Campos><Criterio>|<Índices><Criterio>
+        private void Ordenadores()
+        {
+
+            if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
+            {
+                Campos();
+                Criterio();
+
+            }
+            else if (Categoria.NUMERO_ENTERO.Equals(Componente.GetCategoria()))
+            {
+                Indices();
+                Criterio();
+            }
+        }
+        // <Criterio>            -->  ASC|DESC| Epsilon
+        private void Criterio()
+        {
+            if (Categoria.ASCENDENTE.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+
+            }
+            else if (Categoria.DESCENDENTE.Equals(Componente.GetCategoria()))
+            {
+                PedirComponente();
+            }
+
+        }
+        // <Índices>       -->  ENTERO|ENTERO<Índices>
+        private void Indices()
+        {
+            PedirComponente();
+            Boolean ComaActiva = true;
+            while (ComaActiva)
+            {
+                if (Categoria.COMA.Equals(Componente.GetCategoria()))
+                {
+                    PedirComponente();
+
+                    if (Categoria.NUMERO_ENTERO.Equals(Componente.GetCategoria()))
+                    {
+                        PedirComponente();
+                    }
+                    else
+                    {
+                        String Falla = "Luego de la 'COMA', debio seguir un numero entero";
+                        string Causa = "No se ha ingresado un numero entero despues de la coma, se ha ingreasado: " + Componente.GetLexema();
+                        String Solucion = "Asegurese de ingresar un numero entero luego de una COMA";
+                        int PosicionFinal = Componente.GetPosicionFinal();
+                        int PosicionInicial = Componente.GetPosicionInicial();
+                        int NumeroLinea = Componente.GetNumeroLinea();
+
+                        Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                        GestorErrores.Agregar(Error);
+                        throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha Ingresado un numero entero luego de una 'COMA', se recibio: " + Componente.GetLexema());
+                    }
+
+                }
+                else
+                {
+                    ComaActiva = false;
+                }
+            }
 
         }
     }
