@@ -69,7 +69,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                 throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha empezado el con un SELECT, se recibio: " + Componente.GetLexema());
             }
         }
-
+        //  <Campos>-> CAMPO|CAMPO,<Campos>
         private void Campos()
         {
             if (Categoria.CAMPO.Equals(Componente.GetCategoria()))
@@ -142,6 +142,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                 throw new Exception("Se ha presentado un problema durante el analisis sintatico, no se ha ingresado el from despues de los campos, se recibio: " + Componente.GetLexema());
             }
         }
+        //  <Tablas>-> TABLA|TABLA,<Tablas>
         private void Tablas()
         {
             if (Categoria.TABLA.Equals(Componente.GetCategoria()))
