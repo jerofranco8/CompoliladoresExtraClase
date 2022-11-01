@@ -105,3 +105,4 @@ C:\Users\jerof\OneDrive\Documentos\Universidad\Compiladores\CompiladoreGitHub\Co
 C:\Users\jerof\OneDrive\Documentos\Universidad\Compiladores\CompiladoreGitHub\CompoliladoresExtraClase\CompiladoresParcialJero\CompiladoresJeronimo\obj\Debug\net6.0-windows\CompiladoresJeronimo.pdb
 C:\Users\jerof\OneDrive\Documentos\Universidad\Compiladores\CompiladoreGitHub\CompoliladoresExtraClase\CompiladoresParcialJero\CompiladoresJeronimo\obj\Debug\net6.0-windows\CompiladoresJeronimo.genruntimeconfig.cache
 C:\Users\jerof\OneDrive\Documentos\Universidad\Compiladores\CompiladoreGitHub\CompoliladoresExtraClase\CompiladoresParcialJero\CompiladoresJeronimo\obj\Debug\net6.0-windows\ref\CompiladoresJeronimo.dll
+C:\Users\jerof\OneDrive\Documentos\Universidad\Compiladores\CompiladoreGitHub\CompoliladoresExtraClase\CompiladoresParcialJero\CompiladoresJeronimo\obj\Debug\net6.0-windows\CompiladoresJeronimo.Properties.Resources.resources

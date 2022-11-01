@@ -27,7 +27,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
             if (GestorErrores.HayErroresAnalisis())
             {
-                MessageBox.Show("Hay errores dentro del proceso de compilacion");
+                MessageBox.Show("Hay errores lexicos en los componentes, revisa la tabla de errores para encontrarlos");
             }
             else if (Categoria.FIN_ARCHIVO.Equals(Componente.GetCategoria()))
             {
@@ -35,7 +35,8 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
-                MessageBox.Show("El programa esta bien escrito, pero faltaron componentes por evaluar");
+                MessageBox.Show("El programa esta bien escrito , pero faltaron componentes por evaluar");
+
             }
         }
 
@@ -48,11 +49,26 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             From();
             Tablas();
             Where();
-            Order_BY();
+            Order_BY();     
+            if (!Categoria.FIN_ARCHIVO.Equals(Componente.GetCategoria()))
+            {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
+                String Falla = "Programa mal escrito a nivel de estructura";
+                string Causa = "El programa escrito no debia incluir: "+Componente.GetLexema()+" en ese lugar";
+                String Solucion = "Asegurese de tener el programa bien escrito a nivel de estructura";
+                int PosicionFinal = Componente.GetPosicionFinal();
+                int PosicionInicial = Componente.GetPosicionInicial();
+                int NumeroLinea = Componente.GetNumeroLinea();
+
+                Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
+                GestorErrores.Agregar(Error);
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, el programa esta mal escrito a nivel de estructura cerca a : " + Componente.GetLexema());
+            }
         }
 
         private void Select()
         {
+            
             if (Categoria.SQL_SELECT.Equals(Componente.GetCategoria()))
             {
                 PedirComponente();
@@ -250,7 +266,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
                 Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
                 GestorErrores.Agregar(Error);
-                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba un un campo, literal, decimal o entero, se recibio: " + Componente.GetLexema());
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba  un campo, literal, decimal o entero despues de una operando y se recibio: " + Componente.GetLexema());
             }
         }
         // <Operador>       -->  MAYOR QUE|MENOR QUE|IGUAL QUE|MAYOR O IGUAL QUE|  MENOR O IGUAL QUE|DIFERENTE QUE
@@ -292,7 +308,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
                 Error Error = Error.CrearErrorSintatico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
                 GestorErrores.Agregar(Error);
-                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se operador valido, se recibio: " + Componente.GetLexema());
+                throw new Exception("Se ha presentado un problema durante el analisis sintatico, se esperaba un operador valido, se recibio: " + Componente.GetLexema());
             }
 
         }

@@ -3,6 +3,7 @@ using CompiladoresJeronimo.Transversal.Componente;
 using CompiladoresJeronimo.Transversal.ManejadorErrores;
 using System.IO;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CompiladoresJeronimo
 {
@@ -12,15 +13,27 @@ namespace CompiladoresJeronimo
         {
             InitializeComponent();
         }
-        private String CodigoOrganizado;
         private String CodigoDesorganizado;
 
         private void button1_Click(object sender, EventArgs e)
         {
             List<ComponenteLexico> ListaDeComponentes = new List<ComponenteLexico>();
 
+            String CodigoOrganizado = "";
 
+            if (string.IsNullOrEmpty(TB_Fuente.Text))
+            {
+                MessageBox.Show("Debes ingresar una sentencia SQL");
+                return;
+            }
 
+            for (int i = 0; i < TB_Fuente.Lines.Count(); i++)
+            {
+                CodigoOrganizado = CodigoOrganizado + (i + 1) + "   " + TB_Fuente.Lines[i] + "\r\n";
+            }
+            TB_Organizado.Text = CodigoOrganizado;
+
+            
 
             for (int i = 0; i < TB_Fuente.Lines.Count(); i++)
             {
@@ -31,12 +44,16 @@ namespace CompiladoresJeronimo
             {
                 AnalisadosSintactico.AnalisisSintactico AnaSin = new AnalisadosSintactico.AnalisisSintactico();
                 AnaSin.Analizar();
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-           
+
+
+            
+
 
             try
             {
@@ -45,10 +62,11 @@ namespace CompiladoresJeronimo
                 do
                 {
                     Componente = Analex.DevolverComponente();
-                    MessageBox.Show(Componente.ToString());
+
                     ListaDeComponentes.Add(Componente);
 
                 } while (!Componente.GetCategoria().Equals(Categoria.FIN_ARCHIVO));
+
             }
             catch (Exception ex)
             {
@@ -70,8 +88,11 @@ namespace CompiladoresJeronimo
             }
             if (GestorErrores.HayErroresAnalisis())
             {
+                int LineaDelUltimoError = 0;
+                int PosicionInicialDelUltimoError = 0;
                 for (int i = 0; i < GestorErrores.ObtenerErrores().Count(); i++)
                 {
+                    
                     DataGridViewRow Fila2 = new DataGridViewRow();
                     Fila2.CreateCells(dataGridView2);
                     Fila2.Cells[0].Value = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
@@ -81,37 +102,37 @@ namespace CompiladoresJeronimo
                     Fila2.Cells[4].Value = GestorErrores.ObtenerErrores()[i].GetCausa();
                     Fila2.Cells[5].Value = GestorErrores.ObtenerErrores()[i].GetSolucion();
                     Fila2.Cells[6].Value = GestorErrores.ObtenerErrores()[i].GetTipo();
+
+
+                    if(LineaDelUltimoError > GestorErrores.ObtenerErrores()[i].GetNumeroLinea())
+                    {
+                        break;
+                    }
+                    else if (LineaDelUltimoError == GestorErrores.ObtenerErrores()[i].GetNumeroLinea() && PosicionInicialDelUltimoError >= GestorErrores.ObtenerErrores()[i].GetPosicionInicial())
+                    {
+                        break;
+                    }
+
+                    PosicionInicialDelUltimoError = GestorErrores.ObtenerErrores()[i].GetPosicionInicial();
+                    LineaDelUltimoError = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
                     dataGridView2.Rows.Add(Fila2);
+                   
                 }
             }
             
 
         }
 
-       
-
-
-        private void BT_Organizar_Click(object sender, EventArgs e)
-        {
-            String CodigoOrganizado = "";
-
-            for (int i = 0; i < TB_Fuente.Lines.Count(); i++)
-            {
-                CodigoOrganizado = CodigoOrganizado + (i + 1) + "   " + TB_Fuente.Lines[i] + "\r\n";
-            }
-            TB_Organizado.Text = CodigoOrganizado;
-            
-        }
 
         private void BT_Reiniciar_Click_1(object sender, EventArgs e)
         {
             Cache.GetCache().Reiniciar();
+            GestorErrores.Reiniciar();
             TB_Fuente.Clear();
             TB_Organizado.Clear();
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
             CodigoDesorganizado = "";
-            CodigoOrganizado = "";
         }
 
         private void BTCargarTipoArchivo_Click(object sender, EventArgs e)
@@ -142,5 +163,7 @@ namespace CompiladoresJeronimo
                 MessageBox.Show("Cancelaste abrir archivo");
             }
         }
+
+      
     }
 }

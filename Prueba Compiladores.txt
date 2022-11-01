@@ -1,1 +1,8 @@
-Select Cam_                           From tab_2
+selecT cam_3 from tab_3 
+
+where cam_3='jero' and cam_3=2
+
+
+order              by 1 asc
+
+
