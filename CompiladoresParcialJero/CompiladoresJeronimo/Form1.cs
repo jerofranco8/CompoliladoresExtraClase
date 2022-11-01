@@ -1,8 +1,10 @@
 using CompiladoresJeronimo.Transversal.Cache;
 using CompiladoresJeronimo.Transversal.Componente;
 using CompiladoresJeronimo.Transversal.ManejadorErrores;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CompiladoresJeronimo
@@ -17,9 +19,19 @@ namespace CompiladoresJeronimo
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             List<ComponenteLexico> ListaDeComponentes = new List<ComponenteLexico>();
 
             String CodigoOrganizado = "";
+
+            Cache.GetCache().Reiniciar();
+            GestorErrores.Reiniciar();
+            TB_Organizado.Clear();
+            dataGridView1.Rows.Clear();
+            dataGridView2.Rows.Clear();
+            CodigoDesorganizado = "";
+
+
 
             if (string.IsNullOrEmpty(TB_Fuente.Text))
             {
@@ -33,26 +45,24 @@ namespace CompiladoresJeronimo
             }
             TB_Organizado.Text = CodigoOrganizado;
 
-            
+
 
             for (int i = 0; i < TB_Fuente.Lines.Count(); i++)
             {
                 Cache.GetCache().AgregarContenido(TB_Fuente.Lines[i]);
             }
-           
+
             try
             {
                 AnalisadosSintactico.AnalisisSintactico AnaSin = new AnalisadosSintactico.AnalisisSintactico();
                 AnaSin.Analizar();
-                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-
-            
 
 
             try
@@ -88,52 +98,57 @@ namespace CompiladoresJeronimo
             }
             if (GestorErrores.HayErroresAnalisis())
             {
-                int LineaDelUltimoError = 0;
-                int PosicionInicialDelUltimoError = 0;
-                for (int i = 0; i < GestorErrores.ObtenerErrores().Count(); i++)
+
+                if (GestorErrores.ObtenerErrores().Count%2==0)
                 {
-                    
-                    DataGridViewRow Fila2 = new DataGridViewRow();
-                    Fila2.CreateCells(dataGridView2);
-                    Fila2.Cells[0].Value = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
-                    Fila2.Cells[1].Value = GestorErrores.ObtenerErrores()[i].GetPosicionInicial();
-                    Fila2.Cells[2].Value = GestorErrores.ObtenerErrores()[i].GetPosicionFinal();
-                    Fila2.Cells[3].Value = GestorErrores.ObtenerErrores()[i].GetFalla();
-                    Fila2.Cells[4].Value = GestorErrores.ObtenerErrores()[i].GetCausa();
-                    Fila2.Cells[5].Value = GestorErrores.ObtenerErrores()[i].GetSolucion();
-                    Fila2.Cells[6].Value = GestorErrores.ObtenerErrores()[i].GetTipo();
-
-
-                    if(LineaDelUltimoError > GestorErrores.ObtenerErrores()[i].GetNumeroLinea())
+                    for (int i = GestorErrores.ObtenerErrores().Count()/2; i < GestorErrores.ObtenerErrores().Count(); i++)
                     {
-                        break;
-                    }
-                    else if (LineaDelUltimoError == GestorErrores.ObtenerErrores()[i].GetNumeroLinea() && PosicionInicialDelUltimoError >= GestorErrores.ObtenerErrores()[i].GetPosicionInicial())
-                    {
-                        break;
-                    }
 
-                    PosicionInicialDelUltimoError = GestorErrores.ObtenerErrores()[i].GetPosicionInicial();
-                    LineaDelUltimoError = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
-                    dataGridView2.Rows.Add(Fila2);
-                   
+
+                        DataGridViewRow Fila2 = new DataGridViewRow();
+                        Fila2.CreateCells(dataGridView2);
+                        Fila2.Cells[0].Value = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
+                        Fila2.Cells[1].Value = GestorErrores.ObtenerErrores()[i].GetPosicionInicial();
+                        Fila2.Cells[2].Value = GestorErrores.ObtenerErrores()[i].GetPosicionFinal();
+                        Fila2.Cells[3].Value = GestorErrores.ObtenerErrores()[i].GetFalla();
+                        Fila2.Cells[4].Value = GestorErrores.ObtenerErrores()[i].GetCausa();
+                        Fila2.Cells[5].Value = GestorErrores.ObtenerErrores()[i].GetSolucion();
+                        Fila2.Cells[6].Value = GestorErrores.ObtenerErrores()[i].GetTipo();
+                        dataGridView2.Rows.Add(Fila2);
+
+
+
+
+                    }
                 }
+                else {
+                    for (int i = (GestorErrores.ObtenerErrores().Count()-1)/2; i < GestorErrores.ObtenerErrores().Count(); i++)
+                    {
+
+
+                        DataGridViewRow Fila2 = new DataGridViewRow();
+                        Fila2.CreateCells(dataGridView2);
+                        Fila2.Cells[0].Value = GestorErrores.ObtenerErrores()[i].GetNumeroLinea();
+                        Fila2.Cells[1].Value = GestorErrores.ObtenerErrores()[i].GetPosicionInicial();
+                        Fila2.Cells[2].Value = GestorErrores.ObtenerErrores()[i].GetPosicionFinal();
+                        Fila2.Cells[3].Value = GestorErrores.ObtenerErrores()[i].GetFalla();
+                        Fila2.Cells[4].Value = GestorErrores.ObtenerErrores()[i].GetCausa();
+                        Fila2.Cells[5].Value = GestorErrores.ObtenerErrores()[i].GetSolucion();
+                        Fila2.Cells[6].Value = GestorErrores.ObtenerErrores()[i].GetTipo();
+                        dataGridView2.Rows.Add(Fila2);
+
+
+                    }
+
+                }
+                
             }
-            
+
 
         }
 
 
-        private void BT_Reiniciar_Click_1(object sender, EventArgs e)
-        {
-            Cache.GetCache().Reiniciar();
-            GestorErrores.Reiniciar();
-            TB_Fuente.Clear();
-            TB_Organizado.Clear();
-            dataGridView1.Rows.Clear();
-            dataGridView2.Rows.Clear();
-            CodigoDesorganizado = "";
-        }
+
 
         private void BTCargarTipoArchivo_Click(object sender, EventArgs e)
         {
@@ -164,6 +179,6 @@ namespace CompiladoresJeronimo
             }
         }
 
-      
+
     }
 }

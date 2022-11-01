@@ -27,11 +27,11 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
             if (GestorErrores.HayErroresAnalisis())
             {
-                MessageBox.Show("Hay errores lexicos en los componentes, revisa la tabla de errores para encontrarlos");
+                MessageBox.Show("El programa esta bien escrito a nivel sintactico pero hay errores lexicos en los componentes, revisa la tabla de errores para encontrarlos");
             }
             else if (Categoria.FIN_ARCHIVO.Equals(Componente.GetCategoria()))
             {
-                MessageBox.Show("El programa esta bien escrito...");
+                MessageBox.Show("!PROGRAMA BIEN ESCRITO A NIVEL SINTACTICO Y LEXICO¡");
             }
             else
             {
@@ -49,12 +49,12 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             From();
             Tablas();
             Where();
-            Order_BY();     
+            Order_BY();
             if (!Categoria.FIN_ARCHIVO.Equals(Componente.GetCategoria()))
             {
                 MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "Programa mal escrito a nivel de estructura";
-                string Causa = "El programa escrito no debia incluir: "+Componente.GetLexema()+" en ese lugar";
+                string Causa = "El programa escrito no debia incluir: " + Componente.GetLexema() + " en ese lugar";
                 String Solucion = "Asegurese de tener el programa bien escrito a nivel de estructura";
                 int PosicionFinal = Componente.GetPosicionFinal();
                 int PosicionInicial = Componente.GetPosicionInicial();
@@ -68,13 +68,14 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
 
         private void Select()
         {
-            
+
             if (Categoria.SQL_SELECT.Equals(Componente.GetCategoria()))
             {
                 PedirComponente();
             }
             else
             {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "El codigo fuente debe empezar por SELECT";
                 string Causa = "No se ha empezado el codigo con un SELECT, se ha empezado con un: " + Componente.GetLexema();
                 String Solucion = "Asegurese de empezar el codigo con SELECT";
@@ -96,6 +97,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
+                MessageBox.Show("Near 'SELECT': syntax error ");
                 String Falla = "El codigo fuente debe incluir minimo un CAMPO";
                 string Causa = "No se ha ingresado un CAMPO: " + Componente.GetLexema();
                 String Solucion = "Asegurese de ingresar un CAMPO";
@@ -120,6 +122,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                     }
                     else
                     {
+                        MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                         String Falla = "Luego de la 'COMA', debio seguir otro CAMPO";
                         string Causa = "No se ha ingresado un CAMPO despues de la coma, se ha ingreasado: " + Componente.GetLexema();
                         String Solucion = "Asegurese de ingresar un CAMPO luego de una COMA";
@@ -148,6 +151,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "Luego de los campos debia seguir un FROM";
                 string Causa = "Luego de los campos debia seguir un FROM, y se ingresado un: " + Componente.GetLexema();
                 String Solucion = "Asegurese de que luego de los campos siga un FROM";
@@ -169,6 +173,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "El codigo fuente debe incluir minimo una TABLA";
                 string Causa = "No se ha ingresado una TABLA: " + Componente.GetLexema();
                 String Solucion = "Asegurese de ingresar una TABLA";
@@ -193,6 +198,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                     }
                     else
                     {
+                        MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                         String Falla = "Luego de la 'COMA', debio seguir otra TABLA";
                         string Causa = "No se ha ingresado una TABLA despues de la coma, se ha ingreasado: " + Componente.GetLexema();
                         String Solucion = "Asegurese de ingresar una TABLA luego de una COMA";
@@ -257,8 +263,9 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "Operando no valido";
-                string Causa = "Se esperaba recibir un campo, literal, decimal o entero y se recibio : "+ Componente.GetLexema();
+                string Causa = "Se esperaba recibir un campo, literal, decimal o entero y se recibio : " + Componente.GetLexema();
                 String Solucion = "Asegurese de tener un campo, literal, decimal o entero en la posicion indicada ";
                 int PosicionFinal = Componente.GetPosicionFinal();
                 int PosicionInicial = Componente.GetPosicionInicial();
@@ -299,6 +306,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
             }
             else
             {
+                MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                 String Falla = "Operador no valido";
                 string Causa = "Se esperaba recibir un operador valido y se recibio : " + Componente.GetLexema();
                 String Solucion = "Asegurese de tener un operador valido en la posicion indicada ";
@@ -384,6 +392,7 @@ namespace CompiladoresJeronimo.AnalisadosSintactico
                     }
                     else
                     {
+                        MessageBox.Show("Near '" + Componente.GetLexema() + "': syntax error ");
                         String Falla = "Luego de la 'COMA', debio seguir un numero entero";
                         string Causa = "No se ha ingresado un numero entero despues de la coma, se ha ingreasado: " + Componente.GetLexema();
                         String Solucion = "Asegurese de ingresar un numero entero luego de una COMA";

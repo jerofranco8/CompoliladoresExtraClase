@@ -68,9 +68,9 @@ namespace CompiladoresJeronimo.AnalizadorLexico
                 Puntero = LineaActual.ObtenerLongitudContenido() + 2;
             }
             else
-            
+
             {
-                CaracterActual = LineaActual.GetContenido().Substring(Puntero-1, 1);
+                CaracterActual = LineaActual.GetContenido().Substring(Puntero - 1, 1);
                 AumentarPuntero();
             }
         }
@@ -89,7 +89,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             ComponenteLexico Retorno = null;
 
             Reinicar();
-           
+
 
             while (ContinuarAnalisis)
             {
@@ -450,7 +450,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         {
             return ",".Equals(CaracterActual);
         }
-        
+
         private bool EsIgual()
         {
             return "=".Equals(CaracterActual);
@@ -637,7 +637,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
                 EstadoActual = 67;
                 Concatenar();
             }
-            else if (EsFinLinea()|| EsFinDeLinea())
+            else if (EsFinLinea() || EsFinDeLinea())
             {
                 EstadoActual = 68;
             }
@@ -900,15 +900,15 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         private ComponenteLexico ProcesarEstado17()
         {
             ContinuarAnalisis = false;
-            String Falla="Número decimal no válido";
-            string Causa ="Luego del separardor decimal se debe recibir un digito y se recibio un: "+ CaracterActual;
-            String Solucion="Luego del separardor decimal se debe recibir un digito";
+            String Falla = "Número decimal no válido";
+            string Causa = "Luego del separardor decimal se debe recibir un digito y se recibio un: " + CaracterActual;
+            String Solucion = "Luego del separardor decimal se debe recibir un digito";
             int PosicionFinal = Puntero - 1;
             int PosicionInicial = Puntero - Lexema.Length;
             DevolverPuntero();
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
-            ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema+"0", Categoria.NUMERO_DECIMAL, NumeroLinea, PosicionInicial, PosicionFinal);
+            ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema + "0", Categoria.NUMERO_DECIMAL, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
         }
 
@@ -944,7 +944,8 @@ namespace CompiladoresJeronimo.AnalizadorLexico
                 EstadoActual = 22;
                 Concatenar();
             }
-            else if(EsFinLinea()){
+            else if (EsFinLinea())
+            {
                 EstadoActual = 80;
             }
             else
@@ -1362,7 +1363,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         private void ProcesarEstado50()
         {
             LeerSiguienteCaracter();
- 
+
 
             if (Es_C())
             {
@@ -1575,14 +1576,14 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         }
         private ComponenteLexico ProcesarEstado69()
         {
-            int count = Lexema.Length+1;
+            int count = Lexema.Length + 1;
             string Causa = "No se respeto la estructura de la cadena SELECT, el lexema digitado fue: " + Lexema;
 
             Lexema = "SELECT";
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
-            int PosicionFinal = PosicionInicial+5;
-            
+            int PosicionFinal = PosicionInicial + 5;
+
             DevolverPuntero();
             String Falla = "SELECT no valido";
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura SELECT";
@@ -1653,7 +1654,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             int PosicionInicial = Puntero - count;
             int PosicionFinal = PosicionInicial + 2;
             DevolverPuntero();
-            String Falla = "Conector Y no valido";   
+            String Falla = "Conector Y no valido";
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura AND";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
@@ -1688,7 +1689,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             int PosicionFinal = PosicionInicial + 4;
             DevolverPuntero();
             String Falla = "Descendente no valido";
-            
+
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura DESC";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
@@ -1702,13 +1703,13 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             var random = new Random(seed);
             var value = random.Next(0, 1000);
             string Causa = "No se respeto la estructura de la cadena CAM_<nombre>, el lexema digitado fue: " + Lexema;
-            Lexema = "CAM_"+value;
+            Lexema = "CAM_" + value;
             ContinuarAnalisis = false;
             int PosicionInicial = Puntero - count;
-            int PosicionFinal = PosicionInicial + Lexema.Length-1;
+            int PosicionFinal = PosicionInicial + Lexema.Length - 1;
             DevolverPuntero();
             String Falla = "Campo no valido";
-            
+
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura CAM_<nombre>";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
@@ -1728,7 +1729,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             int PosicionFinal = PosicionInicial + Lexema.Length - 1;
             DevolverPuntero();
             String Falla = "Tabla no valida";
-            
+
             String Solucion = "Asegurese de ingresar una cadena con la siguiente estructura TAB_<nombre>";
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
@@ -1738,7 +1739,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
         private ComponenteLexico ProcesarEstado78()
         {
             String Falla = "Simoblo no reconocido por el legunaje";
-            string Causa = "Recibí "+CaracterActual+" ";
+            string Causa = "Recibí " + CaracterActual + " ";
             String Solucion = "Asegurese que el programa de entrada solo contenga simbolos validos";
             int PosicionFinal = Puntero - 1;
             int PosicionInicial = Puntero - 1;
@@ -1755,12 +1756,12 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             int PosicionInicial = Puntero - 1;
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
-            throw new Exception("Se ha presentado un problema durante el analisis lexico, dado que el simbolo: '"+CaracterActual +"' es inteligible ");
+            throw new Exception("Se ha presentado un problema durante el analisis lexico, dado que el simbolo: '" + CaracterActual + "' es inteligible ");
         }
         private ComponenteLexico ProcesarEstado80()
-        { 
+        {
 
-            Lexema = Lexema+"’";
+            Lexema = Lexema + "’";
             ContinuarAnalisis = false;
             String Falla = "Literal no valido";
             string Causa = "Luego de iniciar un literal sebe de cerrar con una comilla sencilla";
@@ -1771,7 +1772,7 @@ namespace CompiladoresJeronimo.AnalizadorLexico
             DevolverPuntero();
             Error Error = Error.CrearErrorLexico(NumeroLinea, PosicionInicial, PosicionFinal, Falla, Causa, Solucion);
             GestorErrores.Agregar(Error);
-            ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema+"'", Categoria.LITERAL, NumeroLinea, PosicionInicial, PosicionFinal);
+            ComponenteLexico Retorno = ComponenteLexico.CrearDummy(Lexema + "'", Categoria.LITERAL, NumeroLinea, PosicionInicial, PosicionFinal);
             return Retorno;
 
         }

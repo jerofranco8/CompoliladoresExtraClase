@@ -32,11 +32,16 @@
             this.TB_Fuente = new System.Windows.Forms.TextBox();
             this.TB_Organizado = new System.Windows.Forms.TextBox();
             this.BTCargarTipoArchivo = new System.Windows.Forms.Button();
-            this.BT_Reiniciar = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Categoria_ = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Posicion_inicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Posicion_final = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TablaDeErrores = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.a = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,12 +52,6 @@
             this.Solucion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo_ = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.Categoria_ = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Posicion_inicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Posicion_final = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -65,7 +64,7 @@
             // 
             this.BT_Procesar.BackColor = System.Drawing.Color.Silver;
             this.BT_Procesar.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BT_Procesar.Location = new System.Drawing.Point(459, 213);
+            this.BT_Procesar.Location = new System.Drawing.Point(207, 213);
             this.BT_Procesar.Name = "BT_Procesar";
             this.BT_Procesar.Size = new System.Drawing.Size(195, 67);
             this.BT_Procesar.TabIndex = 0;
@@ -93,26 +92,13 @@
             // 
             this.BTCargarTipoArchivo.BackColor = System.Drawing.Color.Silver;
             this.BTCargarTipoArchivo.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BTCargarTipoArchivo.Location = new System.Drawing.Point(792, 213);
+            this.BTCargarTipoArchivo.Location = new System.Drawing.Point(678, 213);
             this.BTCargarTipoArchivo.Name = "BTCargarTipoArchivo";
             this.BTCargarTipoArchivo.Size = new System.Drawing.Size(178, 67);
             this.BTCargarTipoArchivo.TabIndex = 5;
             this.BTCargarTipoArchivo.Text = "Cargar por archivo";
             this.BTCargarTipoArchivo.UseVisualStyleBackColor = false;
             this.BTCargarTipoArchivo.Click += new System.EventHandler(this.BTCargarTipoArchivo_Click);
-            // 
-            // BT_Reiniciar
-            // 
-            this.BT_Reiniciar.BackColor = System.Drawing.Color.Silver;
-            this.BT_Reiniciar.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BT_Reiniciar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.BT_Reiniciar.Location = new System.Drawing.Point(87, 213);
-            this.BT_Reiniciar.Name = "BT_Reiniciar";
-            this.BT_Reiniciar.Size = new System.Drawing.Size(183, 67);
-            this.BT_Reiniciar.TabIndex = 6;
-            this.BT_Reiniciar.Text = "Reiniciar";
-            this.BT_Reiniciar.UseVisualStyleBackColor = false;
-            this.BT_Reiniciar.Click += new System.EventHandler(this.BT_Reiniciar_Click_1);
             // 
             // tabControl1
             // 
@@ -128,7 +114,6 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Wheat;
-            this.tabPage1.Controls.Add(this.BT_Reiniciar);
             this.tabPage1.Controls.Add(this.BT_Procesar);
             this.tabPage1.Controls.Add(this.BTCargarTipoArchivo);
             this.tabPage1.Controls.Add(this.TB_Fuente);
@@ -167,6 +152,39 @@
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.Size = new System.Drawing.Size(1093, 590);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // Categoria_
+            // 
+            this.Categoria_.HeaderText = "Categoria";
+            this.Categoria_.Name = "Categoria_";
+            this.Categoria_.Width = 150;
+            // 
+            // Lexema
+            // 
+            this.Lexema.HeaderText = "Lexema";
+            this.Lexema.Name = "Lexema";
+            this.Lexema.Width = 450;
+            // 
+            // Linea
+            // 
+            this.Linea.HeaderText = "Linea";
+            this.Linea.Name = "Linea";
+            // 
+            // Posicion_inicial
+            // 
+            this.Posicion_inicial.HeaderText = "Posicion_inicial";
+            this.Posicion_inicial.Name = "Posicion_inicial";
+            // 
+            // Posicion_final
+            // 
+            this.Posicion_final.HeaderText = "Posicion_final";
+            this.Posicion_final.Name = "Posicion_final";
+            // 
+            // Tipo
+            // 
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.Name = "Tipo";
+            this.Tipo.Width = 150;
             // 
             // TablaDeErrores
             // 
@@ -242,39 +260,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // Categoria_
-            // 
-            this.Categoria_.HeaderText = "Categoria";
-            this.Categoria_.Name = "Categoria_";
-            this.Categoria_.Width = 150;
-            // 
-            // Lexema
-            // 
-            this.Lexema.HeaderText = "Lexema";
-            this.Lexema.Name = "Lexema";
-            this.Lexema.Width = 450;
-            // 
-            // Linea
-            // 
-            this.Linea.HeaderText = "Linea";
-            this.Linea.Name = "Linea";
-            // 
-            // Posicion_inicial
-            // 
-            this.Posicion_inicial.HeaderText = "Posicion_inicial";
-            this.Posicion_inicial.Name = "Posicion_inicial";
-            // 
-            // Posicion_final
-            // 
-            this.Posicion_final.HeaderText = "Posicion_final";
-            this.Posicion_final.Name = "Posicion_final";
-            // 
-            // Tipo
-            // 
-            this.Tipo.HeaderText = "Tipo";
-            this.Tipo.Name = "Tipo";
-            this.Tipo.Width = 150;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -300,7 +285,6 @@
         private TextBox TB_Organizado;
 
         private Button BTCargarTipoArchivo;
-        private Button BT_Reiniciar;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
